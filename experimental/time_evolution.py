@@ -1,10 +1,7 @@
 import sys
 sys.path.append(r'../')
-import numpy as np
-from functions import *
+from bundle_net.functions import *
 
-from sklearn.metrics import confusion_matrix
-import seaborn as sns
 import os
 
 os.chdir('..')

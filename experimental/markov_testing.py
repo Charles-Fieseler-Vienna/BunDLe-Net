@@ -1,7 +1,6 @@
 import sys
 sys.path.append(r'../')
-import numpy as np
-from functions import *
+from bundle_net.functions import *
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense

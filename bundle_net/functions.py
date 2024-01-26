@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r'../')
+sys.path.append(r'../../')
 import mat73
 import numpy as np
 import seaborn as sns
@@ -54,7 +54,7 @@ class Database:
     """
     def __init__(self, data_set_no):
         self.data_set_no = data_set_no
-        data_dict = mat73.loadmat('data/raw/NoStim_Data.mat')
+        data_dict = mat73.loadmat('../data/raw/NoStim_Data.mat')
         data  = data_dict['NoStim_Data']
 
         deltaFOverF_bc = data['deltaFOverF_bc'][self.data_set_no]
@@ -102,8 +102,8 @@ class Database:
 
     def categorise_neurons(self):
         self._only_identified_neurons()
-        neuron_list = mat73.loadmat('data/raw/Order279.mat')['Order279']
-        neuron_category = mat73.loadmat('data/raw/ClassIDs_279.mat')['ClassIDs_279']
+        neuron_list = mat73.loadmat('../data/raw/Order279.mat')['Order279']
+        neuron_category = mat73.loadmat('../data/raw/ClassIDs_279.mat')['ClassIDs_279']
         category_dict = {neuron: int(category) for neuron, category in zip(neuron_list, neuron_category)}
 
         mask = np.array([category_dict[neuron] for neuron in self.neuron_names])

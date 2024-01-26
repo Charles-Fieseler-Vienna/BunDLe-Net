@@ -3,9 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from sklearn.decomposition import PCA
-from functions import Database, preprocess_data, prep_data, BunDLeNet, train_model, plotting_neuronal_behavioural, plot_latent_timeseries, plot_phase_space, rotating_plot
+from bundle_net.functions import Database, preprocess_data, prep_data, BunDLeNet, train_model, plotting_neuronal_behavioural, plot_latent_timeseries, plot_phase_space, rotating_plot
 
-sys.path.append(r'../')
+sys.path.append(r'../../')
 
 ### Load Data (excluding behavioural neurons) and plot
 worm_num = 0

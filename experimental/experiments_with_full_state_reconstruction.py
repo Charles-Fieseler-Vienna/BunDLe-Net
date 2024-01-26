@@ -1,7 +1,7 @@
 import sys
 sys.path.append(r'../')
 import numpy as np
-from functions import *
+from bundle_net.functions import *
 
 ### Load Data (and excluding behavioural neurons)
 worm_num = 4
