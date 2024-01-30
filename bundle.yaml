@@ -1,0 +1,20 @@
+# bundle.yaml
+
+# Intended to be used with the long-term support (lts) version of pytorch
+
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9
+  - jupyterlab
+  - pip:
+    - tifffile
+    - mat73
+    - numpy
+    - tqdm
+    - scipy
+    - matplotlib
+    - tensorflow[and-cuda]
+    - scikit-learn
+    - seaborn
+    - chardet
