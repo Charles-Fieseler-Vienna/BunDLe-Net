@@ -19,8 +19,8 @@ def main(DEBUG=False):
                 continue
             try:
                 full_pipeline(data_dir)
-            except:
-                pass
+            except Exception as e:
+                print(f"Error in {data_dir}: {e}")
             if DEBUG:
                 break
         if DEBUG:
