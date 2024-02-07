@@ -1,16 +1,11 @@
 #!/usr/bin/env bash
 
-#SBATCH --job-name=bundle_net
-#SBATCH --nodes=1                   # Use one node
-#SBATCH --ntasks=1                  # Run a single task
-#SBATCH --qos=medium             # Time limit hrs:min:sec
-#SBATCH --output=log_gpu_step-%j.out    # Standard output and error log
-#SBATCH --time=8:00:00
-#SBATCH --mem=16G
-#SBATCH --cpus-per-task=16
-#SBATCH --gpus-per-node=1
+#SBATCH --job-name bundle_net
 #SBATCH --partition=gpu
 #SBATCH --gres=shard:32
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=20G
+#SBATCH --time=0-12:00:00
 
 pwd; hostname; date
 
