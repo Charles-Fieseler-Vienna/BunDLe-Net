@@ -14,6 +14,9 @@ def main(DEBUG=False):
     for subfolder in tqdm(subfolders):
         parent_dir = Path(data_base_dir) / subfolder
         for data_dir in tqdm(Path(parent_dir).iterdir(), leave=False):
+            # Check to see if the files are already processed
+            if (data_dir / "rotation_space.gif").exists():
+                continue
             full_pipeline(data_dir)
             if DEBUG:
                 break
