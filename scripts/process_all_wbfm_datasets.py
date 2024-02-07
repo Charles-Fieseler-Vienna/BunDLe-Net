@@ -17,7 +17,10 @@ def main(DEBUG=False):
             # Check to see if the files are already processed
             if (data_dir / "rotation_space.gif").exists():
                 continue
-            full_pipeline(data_dir)
+            try:
+                full_pipeline(data_dir)
+            except:
+                pass
             if DEBUG:
                 break
         if DEBUG:
