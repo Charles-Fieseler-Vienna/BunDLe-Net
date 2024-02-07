@@ -16,6 +16,7 @@ def main(DEBUG=False):
         for data_dir in tqdm(Path(parent_dir).iterdir(), leave=False):
             # Check to see if the files are already processed
             if (data_dir / "rotation_space.gif").exists():
+                print(f"Skipping {data_dir} because it's already processed")
                 continue
             try:
                 full_pipeline(data_dir)
