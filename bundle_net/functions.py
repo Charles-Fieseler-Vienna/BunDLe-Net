@@ -598,6 +598,7 @@ def full_pipeline(data_dir):
     Returns:
 
     """
+    print(f"Processing {data_dir}")
 
     # Load data
     import pandas as pd
