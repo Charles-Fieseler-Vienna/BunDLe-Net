@@ -642,10 +642,13 @@ def full_pipeline(data_dir):
                   legend=False)
 
     # PCA of latent dimension
-    pca = PCA()
-    Y_pca = pca.fit_transform(Y0_)
-    fig = plot_latent_timeseries(Y_pca, B_, state_names)
-    plt.savefig(os.path.join(data_dir, 'latent_timeseries.png'))
+    try:
+        pca = PCA()
+        Y_pca = pca.fit_transform(Y0_)
+        fig = plot_latent_timeseries(Y_pca, B_, state_names)
+        plt.savefig(os.path.join(data_dir, 'latent_timeseries.png'))
+    except ValueError:
+        pass
 
     # Save trained network
     model.save_weights(os.path.join(data_dir, 'model_weights.h5'))
