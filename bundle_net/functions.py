@@ -574,7 +574,7 @@ def rotating_plot(Y, B, state_names, show_points=False, legend=True, filename='r
 
 
 def plot_latent_timeseries(Y, B, state_names):
-    plt.figure(figsize=(19,5))
+    fig = plt.figure(figsize=(19,5))
     cmap = plt.get_cmap('Pastel1', np.max(B) - np.min(B) + 1)
     im = plt.imshow([B],aspect=600,cmap=cmap, vmin=np.min(B) - 0.5, vmax=np.max(B) + 0.5)
     #cbar = plt.colorbar(ticks=np.arange(len(state_names)))
@@ -584,3 +584,68 @@ def plot_latent_timeseries(Y, B, state_names):
     plt.xlabel("time $t$")
     plt.axis([0,Y.shape[0],-0.5,0.5])
     plt.show()
+
+    return fig
+
+
+def full_pipeline(data_dir):
+    """
+    Full pipeline for the BunDLe Net (training and visualization).
+
+    Args:
+        data_dir:
+
+    Returns:
+
+    """
+
+    # Load data
+    import pandas as pd
+    import os
+    df_traces = pd.read_csv(os.path.join(data_dir, 'traces.csv'), index_col=0)
+    df_beh = pd.read_csv(os.path.join(data_dir, 'behavior.csv'), index_col=0)
+
+    # Put data into expected format
+    df_beh_ints, state_names = pd.factorize(df_beh['0'])
+    X = df_traces.values
+    B = df_beh_ints
+    X_, B_ = prep_data(X, B, win=15)
+
+    # Deploy BunDLe Net
+    model = BunDLeNet(latent_dim=3)
+    model.build(input_shape=X_.shape)
+    optimizer = tf.keras.optimizers.legacy.Adam(learning_rate=0.001)
+
+    loss_array = train_model(
+        X_,
+        B_,
+        model,
+        optimizer,
+        gamma=0.9,
+        n_epochs=2000,
+        pca_init=False,
+        best_of_5_init=False
+    )
+
+    # Plot loss and save
+    fig = plt.figure()
+    for i, label in enumerate(["$\mathcal{L}_{{Markov}}$", "$\mathcal{L}_{{Behavior}}$", "Total loss $\mathcal{L}$"]):
+        plt.semilogy(loss_array[:, i], label=label)
+    plt.legend()
+    plt.savefig(os.path.join(data_dir, 'loss.png'))
+
+    # Project into latent space
+    Y0_ = model.tau(X_[:, 0]).numpy()
+    fig, ax = plot_phase_space(Y0_, B_, state_names=state_names)
+    fig.savefig(os.path.join(data_dir, 'phase_space.png'))
+    rotating_plot(Y0_, B_, filename=os.path.join(data_dir, 'rotation_space.gif'), state_names=state_names,
+                  legend=False)
+
+    # PCA of latent dimension
+    pca = PCA()
+    Y_pca = pca.fit_transform(Y0_)
+    fig = plot_latent_timeseries(Y_pca, B_, state_names)
+    plt.savefig(os.path.join(data_dir, 'latent_timeseries.png'))
+
+    # Save trained network
+    model.save_weights(os.path.join(data_dir, 'model_weights.h5'))
